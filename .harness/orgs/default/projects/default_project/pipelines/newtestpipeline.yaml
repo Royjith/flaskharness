@@ -15,6 +15,7 @@ pipeline:
         identifier: build
         description: ""
         type: CI
+        timeout: 30m
         spec:
           cloneCodebase: true
           caching:
@@ -35,8 +36,10 @@ pipeline:
                   type: Run
                   name: Run_1
                   identifier: Run_1
+                  timeout: 5m
                   spec:
                     shell: Sh
-                    command: echo "hello"
+                    command: |
+                      echo "hello"
         delegateSelectors:
           - docker-delegate
