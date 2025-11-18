@@ -1,0 +1,90 @@
+pipeline:
+  name: Demo
+  identifier: Demo
+  projectIdentifier: pi
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1761129197270
+        repoName: flaskharness
+        build: <+input>
+  stages:
+    - stage:
+        name: build
+        identifier: build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          infrastructure:
+            type: VM
+            spec:
+              type: Pool
+              spec:
+                poolName: ubuntu-gcp
+                os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    shell: Sh
+                    command: echo "build started"
+              - step:
+                  type: Semgrep
+                  name: Semgrep_1
+                  identifier: Semgrep_1
+                  spec:
+                    target:
+                      detection: auto
+                      type: repository
+                    advanced:
+                      log:
+                        level: info
+                      args: {}
+                    mode: orchestration
+                    config: default
+              - step:
+                  type: Owasp
+                  name: Owasp_1
+                  identifier: Owasp_1
+                  spec:
+                    target:
+                      detection: auto
+                      type: repository
+                    advanced:
+                      log:
+                        level: info
+                      args: {}
+                    mode: orchestration
+                    config: default
+              - step:
+                  type: OsvScanner
+                  name: OsvScanner_1
+                  identifier: OsvScanner_1
+                  spec:
+                    target:
+                      detection: auto
+                      type: repository
+                    advanced:
+                      log:
+                        level: info
+                      args: {}
+                    mode: orchestration
+                    config: default
+              - step:
+                  type: Run
+                  name: Run_2
+                  identifier: Run_2
+                  spec:
+                    shell: Sh
+                    command: echo "build succesfull"
